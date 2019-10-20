@@ -57,25 +57,54 @@ $(document).ready(function() {
     $("#intro").hide();
     $("#start").hide();
     displayQuestion();
+    $("#correctdisplay").text("Correct: " + correct);
+    $("#wrongdisplay").text("Incorrect: " + incorrect);
   });
 
   function displayQuestion() {
     for (var g = 0; g < dogquestions.length; g++) {
       $("#questiondisplay").append("<h3>" + dogquestions[g].question + "</h3>");
       for (var q = 0; q < dogquestions[g].choices.length; q++) {
-        $("#questiondisplay").append(
-          "<button class='btn' attr='" +
-            [q] +
-            "' id='choice'>" +
-            dogquestions[g].choices[q] +
-            "</button>"
-        );
+        if ([q] == dogquestions[g].answer) {
+          $("#questiondisplay").append(
+            "<button class='btn' attr='correct' id='choice'>" +
+              dogquestions[g].choices[q] +
+              "</button>"
+          );
+        } else {
+          $("#questiondisplay").append(
+            "<button class='btn' attr='" +
+              [q] +
+              "' id='choice'>" +
+              dogquestions[g].choices[q] +
+              "</button>"
+          );
+        }
       }
     }
   }
 
- $(document).on("click", ".choice", function () {
-      userGuess = parseInt($(this).attr("data-guessvalue"));
+  $(document).on("click", "#choice", function() {
+    userGuess = $(this).attr("attr");
+    console.log(userGuess);
+    console.log("oh wow");
+    if (userGuess == "correct") {
+      correct++;
+      console.log(correct);
+      $(this).html(
+        "<div class='alert alert-success' role='alert'>Correct!</div>"
+      );
+      $("#correctdisplay").text("Correct: " + correct);
+    } else {
+      incorrect++;
+      $(this).html(
+        "<button type='button' class='btn btn-danger'>Incorrect</button>"
+      );
+
+      $("#wrongdisplay").text("Incorrect: " + incorrect);
+    }
+  });
+
   //   setTimeout(function() {
   //     runtimer();
   //   }, 30000);
